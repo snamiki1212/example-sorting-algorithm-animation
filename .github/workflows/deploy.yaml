@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - run: yarn build:ci
       - run: yarn export
 
       - name: Deploy
