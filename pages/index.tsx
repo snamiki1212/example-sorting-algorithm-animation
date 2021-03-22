@@ -1,13 +1,14 @@
 import Head from "next/head";
+import { Home } from "../src/components/pages/Home";
 
-export default function Home() {
+export default function Index() {
   return (
     <div>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>this is home page</div>
+      <Home />
     </div>
   );
 }
