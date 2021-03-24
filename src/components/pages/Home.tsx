@@ -43,6 +43,7 @@ export function Home() {
     type: sortType,
     length,
   });
+  const columnBasis = items.length === 0 ? 0 : 1 / items.length;
 
   const handleReset = useCallback(() => {
     if (!window.confirm("Do you want to reset this data?")) return;
@@ -101,20 +102,23 @@ export function Home() {
         <table
           className="charts-css column"
           style={{
-            height: "200px",
-            margin: "0 auto",
+            height: "300px",
           }}
         >
-          <caption> Column Example #1 </caption>
           <tbody>
             {items.map((item) => (
               <motion.tr
                 key={item}
+                layout
                 animate="visible"
                 variants={variants}
-                layout
                 transition={spring}
-                style={{ "--size": item * 0.1 + 0.1 } as any}
+                style={
+                  {
+                    "--size": (item + 1) * columnBasis,
+                    width: `${columnBasis}px`,
+                  } as any
+                }
               >
                 <td>{item + 1}</td>
               </motion.tr>
