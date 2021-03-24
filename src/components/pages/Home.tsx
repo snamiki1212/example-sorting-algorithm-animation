@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-
-const ITEMS = Array.from({ length: 10 }, (_, idx) => idx);
+import { BubbleSort } from "../../models/BubbleSort";
 
 const spring = {
   type: "spring",
@@ -9,24 +8,46 @@ const spring = {
   stiffness: 300,
 };
 
-export function Home() {
-  const [items, setItems] = useState(ITEMS);
-  const reverse = () => setItems((prev) => [...prev].reverse());
+const variants = {
+  visible: (idx) => ({
+    opacity: 1,
+    transition: {
+      transform: `translate3d(${idx * 5}px, 0, 0)`,
+    },
+  }),
+  hidden: { opacity: 0 },
+};
 
-  const variants = {
-    visible: (idx) => ({
-      opacity: 1,
-      transition: {
-        transform: `translate3d(${idx * 5}px, 0, 0)`,
-      },
-    }),
-    hidden: { opacity: 0 },
-  };
+export function Home() {
+  const [model, setModel] = useState(() => BubbleSort.new().bubbleSort());
+  const items = model.currentStep.data;
+
+  const gotoFirst = useCallback(() => {
+    setModel((prev) => prev.gotoFirst());
+  }, []);
+
+  const gotoLast = useCallback(() => {
+    setModel((prev) => prev.gotoLast());
+  }, []);
+
+  const prev = useCallback(() => {
+    setModel((prev) => prev.prev());
+  }, []);
+
+  const next = useCallback(() => {
+    setModel((prev) => prev.next());
+  }, []);
 
   return (
     <div style={{ background: "pink" }}>
-      this is Top
-      <button onClick={reverse}>reverse</button>
+      <button onClick={gotoFirst} disabled={!model.canPrev}>{`<<`}</button>
+      <button onClick={prev} disabled={!model.canPrev}>
+        {`<`}
+      </button>
+      <button onClick={next} disabled={!model.canNext}>
+        {`>`}
+      </button>
+      <button onClick={gotoLast} disabled={!model.canNext}>{`>>`}</button>
       <div style={{ display: "flex", flexDirection: "row" }}>
         {items.map((item) => (
           <motion.div
