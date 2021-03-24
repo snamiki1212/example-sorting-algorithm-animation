@@ -20,9 +20,9 @@ $ yarn dev
 
 ## Features
 
-- Bubble Sort
-- Selection Sort
-- Insertion Sort
+- [x] Bubble Sort
+- [x] Selection Sort
+- [x] Insertion Sort
 
 ## TODO
 
