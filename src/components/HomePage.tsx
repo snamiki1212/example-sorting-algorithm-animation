@@ -1,4 +1,4 @@
-import { useState, useCallback, forwardRef } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../hooks/useSort";
 import { useToggle } from "../hooks/useToggle";
@@ -12,16 +12,6 @@ const spring = {
   type: "spring",
   damping: 20,
   stiffness: 300,
-} as const;
-
-const variants = {
-  visible: (idx) => ({
-    opacity: 1,
-    transition: {
-      transform: `translate3d(${idx * 5}px, 0, 0)`,
-    },
-  }),
-  hidden: { opacity: 0 },
 } as const;
 
 const OPTIONS: { value: SORT_TYPE; text: string }[] = [
@@ -106,7 +96,7 @@ export function HomePage() {
         <table
           className="charts-css column"
           style={{
-            height: "300px",
+            height: "500px",
           }}
         >
           <tbody>
@@ -114,13 +104,10 @@ export function HomePage() {
               <motion.tr
                 key={item}
                 layout
-                animate="visible"
-                variants={variants}
                 transition={spring}
                 style={
                   {
                     "--size": (item + 1) * columnBasis,
-                    width: `${columnBasis}px`,
                   } as any
                 }
               >
