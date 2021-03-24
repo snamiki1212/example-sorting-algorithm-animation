@@ -36,6 +36,18 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "INSERTION", text: "Insertion Sort" },
 ];
 
+function NumberInputer(props: any) {
+  return (
+    <NumberInput {...props}>
+      <NumberInputField />
+      <NumberInputStepper>
+        <NumberIncrementStepper />
+        <NumberDecrementStepper />
+      </NumberInputStepper>
+    </NumberInput>
+  );
+}
+
 export function Home() {
   const [length, setLength] = useState<number>(10);
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
@@ -88,13 +100,7 @@ export function Home() {
           <Button onClick={handleReset}>Reset</Button>
         </Center>
         <Box>
-          <NumberInput onChange={handleChangeLength} value={length}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+          <NumberInputer onChange={handleChangeLength} value={length} />
         </Box>
       </Box>
 
