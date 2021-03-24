@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort, SORT_TYPE } from "../../hooks/useSort";
 //
-import { Button, Select } from "@chakra-ui/react";
+import { Button, Select, Box } from "@chakra-ui/react";
 
 const spring = {
   type: "spring",
@@ -35,8 +35,8 @@ export function Home() {
   }, []);
 
   return (
-    <div style={{ background: "pink" }}>
-      <div>
+    <Box style={{ background: "pink" }}>
+      <Box>
         <Select onChange={handleSelectSortType}>
           {OPTIONS.map(({ value, text }) => (
             <option key={value} value={value}>
@@ -44,8 +44,8 @@ export function Home() {
             </option>
           ))}
         </Select>
-      </div>
-      <div>
+      </Box>
+      <Box>
         <Button onClick={gotoFirst} disabled={!model?.canPrev}>
           {`<<`}
         </Button>
@@ -58,9 +58,9 @@ export function Home() {
         <Button onClick={gotoLast} disabled={!model?.canNext}>
           {`>>`}
         </Button>
-      </div>
+      </Box>
 
-      <div style={{ background: "lightblue" }}>
+      <Box style={{ background: "lightblue" }}>
         <table
           id="column-example-1"
           className="charts-css column"
@@ -86,7 +86,7 @@ export function Home() {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
