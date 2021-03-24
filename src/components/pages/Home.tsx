@@ -18,7 +18,7 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-export function Home() {
+const useBubbleSort = () => {
   const [model, setModel] = useState(() => BubbleSort.new().bubbleSort());
   const items = model.currentStep.data;
 
@@ -38,6 +38,19 @@ export function Home() {
     setModel((prev) => prev.next());
   }, []);
 
+  return {
+    model,
+    items,
+
+    gotoFirst,
+    gotoLast,
+    prev,
+    next,
+  };
+};
+
+export function Home() {
+  const { model, items, gotoFirst, gotoLast, next, prev } = useBubbleSort();
   return (
     <div style={{ background: "pink" }}>
       <button onClick={gotoFirst} disabled={!model.canPrev}>{`<<`}</button>
