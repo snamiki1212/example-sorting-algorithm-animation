@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort, SORT_TYPE } from "../../hooks/useSort";
+//
+import { Button, Select } from "@chakra-ui/react";
 
 const spring = {
   type: "spring",
@@ -35,23 +37,27 @@ export function Home() {
   return (
     <div style={{ background: "pink" }}>
       <div>
-        <select onChange={handleSelectSortType}>
+        <Select onChange={handleSelectSortType}>
           {OPTIONS.map(({ value, text }) => (
             <option key={value} value={value}>
               {text}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       <div>
-        <button onClick={gotoFirst} disabled={!model?.canPrev}>{`<<`}</button>
-        <button onClick={prev} disabled={!model?.canPrev}>
+        <Button onClick={gotoFirst} disabled={!model?.canPrev}>
+          {`<<`}
+        </Button>
+        <Button onClick={prev} disabled={!model?.canPrev}>
           {`<`}
-        </button>
-        <button onClick={next} disabled={!model?.canNext}>
+        </Button>
+        <Button onClick={next} disabled={!model?.canNext}>
           {`>`}
-        </button>
-        <button onClick={gotoLast} disabled={!model?.canNext}>{`>>`}</button>
+        </Button>
+        <Button onClick={gotoLast} disabled={!model?.canNext}>
+          {`>>`}
+        </Button>
       </div>
 
       <div style={{ background: "lightblue" }}>
