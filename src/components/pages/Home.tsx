@@ -1,12 +1,15 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../../hooks/useSort";
+import { useToggle } from "../../hooks/useToggle";
 import { SORT_TYPE } from "../../models/Sorter";
 import {
   Button,
   Select,
   Box,
   Center,
+  Text,
+  Switch,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -57,6 +60,8 @@ export function Home() {
   });
   const columnBasis = items.length === 0 ? 0 : 1 / items.length;
 
+  const [showNumber, toggleShowNumber] = useToggle(false);
+
   const handleReset = useCallback(() => {
     if (!window.confirm("Do you want to reset this data?")) return;
     reset();
@@ -97,6 +102,10 @@ export function Home() {
           </Button>
         </Center>
         <Center>
+          <Box>
+            <Switch isChecked={showNumber} onChange={toggleShowNumber} />
+            <Text>Show Number</Text>
+          </Box>
           <Button onClick={handleReset}>Reset</Button>
         </Center>
         <Box>
@@ -126,7 +135,7 @@ export function Home() {
                   } as any
                 }
               >
-                <td>{item + 1}</td>
+                <td>{showNumber && item + 1}</td>
               </motion.tr>
             ))}
           </tbody>
