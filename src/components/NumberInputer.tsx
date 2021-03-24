@@ -9,7 +9,7 @@ import {
 
 export const NumberInputer = forwardRef((props: any, ref) => {
   return (
-    <NumberInput {...props} ref={ref}>
+    <NumberInput {...props} ref={ref} max={100} min={0}>
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />

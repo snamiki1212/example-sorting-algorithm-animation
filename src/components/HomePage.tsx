@@ -5,7 +5,15 @@ import { useToggle } from "../hooks/useToggle";
 import { useListenKeydown } from "../hooks/useListenKeydown";
 import { useHandleFocus } from "../hooks/useHandleFocus";
 import { SORT_TYPE } from "../models/Sorter";
-import { Button, Select, Box, Center, Text, Switch } from "@chakra-ui/react";
+import {
+  Button,
+  Select,
+  Box,
+  Flex,
+  Center,
+  Text,
+  Switch,
+} from "@chakra-ui/react";
 import { NumberInputer } from "./NumberInputer";
 
 const spring = {
@@ -52,8 +60,8 @@ export function HomePage() {
   });
 
   return (
-    <Box style={{ background: "pink" }}>
-      <Box>
+    <Box>
+      <Box border="solid" borderWidth={1} borderColor="gray.300" p={5} m={5}>
         <Center>
           <Select onChange={handleSelectSortType}>
             {OPTIONS.map(({ value, text }) => (
@@ -77,23 +85,26 @@ export function HomePage() {
             {`>>`}
           </Button>
         </Center>
-        <Center>
-          <Box>
-            <Switch isChecked={showNumber} onChange={toggleShowNumber} />
+        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap="2rem">
+          <Flex alignItems="center">
             <Text>Show Number</Text>
-          </Box>
-          <Button onClick={handleReset}>Reset</Button>
-          <NumberInputer
-            onChange={handleChangeLength}
-            value={length}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            ref={ref}
-          />
-        </Center>
+            <Switch isChecked={showNumber} onChange={toggleShowNumber} />
+          </Flex>
+          <Flex alignItems="center">
+            <Text>Item Number</Text>
+            <NumberInputer
+              onChange={handleChangeLength}
+              value={length}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              ref={ref}
+            />
+          </Flex>
+          <Button onClick={handleReset}>Regenerate</Button>
+        </Box>
       </Box>
 
-      <Box style={{ background: "lightblue" }}>
+      <Box>
         <table
           className="charts-css column"
           style={{
