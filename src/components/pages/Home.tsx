@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef, forwardRef } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../../hooks/useSort";
 import { useToggle } from "../../hooks/useToggle";
@@ -39,9 +39,9 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "INSERTION", text: "Insertion Sort" },
 ];
 
-function NumberInputer(props: any) {
+const NumberInputer = forwardRef((props: any, ref) => {
   return (
-    <NumberInput {...props}>
+    <NumberInput {...props} ref={ref}>
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />
@@ -49,7 +49,49 @@ function NumberInputer(props: any) {
       </NumberInputStepper>
     </NumberInput>
   );
-}
+});
+
+const KEY_CODE_LIST = {
+  LEFT: 37,
+  RIGHT: 39,
+} as const;
+
+const useKeydown = ({
+  disabled,
+  callbacks,
+}: {
+  disabled: boolean;
+  callbacks: { right: () => void; left: () => void };
+}) => {
+  const handleKeydown = useCallback(
+    (event) => {
+      if (disabled) return;
+      if (event.keyCode === KEY_CODE_LIST.RIGHT) return callbacks.right();
+      if (event.keyCode === KEY_CODE_LIST.LEFT) return callbacks.left();
+    },
+    [disabled, callbacks]
+  );
+
+  useEffect(() => {
+    const event = "keydown";
+    window.addEventListener(event, handleKeydown);
+    return () => window.removeEventListener(event, handleKeydown);
+  }, [handleKeydown]);
+
+  return handleKeydown;
+};
+
+const useHandleFocus = () => {
+  const ref = useRef(null);
+  const { value: hasFocus, on, off } = useToggle(false);
+  useEffect(() => {
+    if (document.hasFocus() && ref?.current?.contains(document.activeElement)) {
+      on();
+    }
+  }, [on]);
+
+  return [hasFocus, { ref, onFocus: on, onBlur: off }] as const;
+};
 
 export function Home() {
   const [length, setLength] = useState<number>(10);
@@ -60,7 +102,7 @@ export function Home() {
   });
   const columnBasis = items.length === 0 ? 0 : 1 / items.length;
 
-  const [showNumber, toggleShowNumber] = useToggle(false);
+  const { value: showNumber, toggle: toggleShowNumber } = useToggle(false);
 
   const handleReset = useCallback(() => {
     if (!window.confirm("Do you want to reset this data?")) return;
@@ -74,6 +116,10 @@ export function Home() {
   const handleChangeLength = useCallback((value) => {
     setLength(value);
   }, []);
+
+  const [hasFocus, { ref, onFocus, onBlur }] = useHandleFocus();
+
+  useKeydown({ disabled: hasFocus, callbacks: { right: next, left: prev } });
 
   return (
     <Box style={{ background: "pink" }}>
@@ -109,7 +155,13 @@ export function Home() {
           <Button onClick={handleReset}>Reset</Button>
         </Center>
         <Box>
-          <NumberInputer onChange={handleChangeLength} value={length} />
+          <NumberInputer
+            onChange={handleChangeLength}
+            value={length}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            ref={ref}
+          />
         </Box>
       </Box>
 
