@@ -12,7 +12,7 @@ type Props = {
   callbacks: { right: () => void; left: () => void };
 };
 
-export const useKeydown = ({ disabled, callbacks }: Props) => {
+export const useListenKeydown = ({ disabled, callbacks }: Props) => {
   const handleKeydown = useCallback(
     (event) => {
       if (disabled) return;

@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../hooks/useSort";
 import { useToggle } from "../hooks/useToggle";
-import { useKeydown } from "../hooks/useKeydown";
+import { useListenKeydown } from "../hooks/useListenKeydown";
 import { useHandleFocus } from "../hooks/useHandleFocus";
 import { SORT_TYPE } from "../models/Sorter";
 import { Button, Select, Box, Center, Text, Switch } from "@chakra-ui/react";
@@ -46,12 +46,15 @@ export function HomePage() {
 
   const [hasFocus, { ref, onFocus, onBlur }] = useHandleFocus();
 
-  useKeydown({ disabled: hasFocus, callbacks: { right: next, left: prev } });
+  useListenKeydown({
+    disabled: hasFocus,
+    callbacks: { right: next, left: prev },
+  });
 
   return (
     <Box style={{ background: "pink" }}>
       <Box>
-        <Box>
+        <Center>
           <Select onChange={handleSelectSortType}>
             {OPTIONS.map(({ value, text }) => (
               <option key={value} value={value}>
@@ -59,7 +62,7 @@ export function HomePage() {
               </option>
             ))}
           </Select>
-        </Box>
+        </Center>
         <Center>
           <Button onClick={gotoFirst} disabled={!model?.canPrev}>
             {`<<`}
@@ -80,8 +83,6 @@ export function HomePage() {
             <Text>Show Number</Text>
           </Box>
           <Button onClick={handleReset}>Reset</Button>
-        </Center>
-        <Box>
           <NumberInputer
             onChange={handleChangeLength}
             value={length}
@@ -89,7 +90,7 @@ export function HomePage() {
             onBlur={onBlur}
             ref={ref}
           />
-        </Box>
+        </Center>
       </Box>
 
       <Box style={{ background: "lightblue" }}>
