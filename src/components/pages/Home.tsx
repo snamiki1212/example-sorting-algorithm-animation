@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { BubbleSort } from "../../models/BubbleSort";
+import { Sorter } from "../../models/Sorter";
 
 const spring = {
   type: "spring",
@@ -18,8 +18,16 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-const useBubbleSort = () => {
-  const [model, setModel] = useState(() => BubbleSort.new().bubbleSort());
+type SORT_TYPE = "BUBBLE" | "SELECTION";
+
+const useSort = (type: SORT_TYPE = "BUBBLE") => {
+  const [model, setModel] = useState(() => {
+    const sorter = Sorter.new();
+    if (type === "BUBBLE") return sorter.bubbleSort();
+    if (type === "SELECTION") return sorter.selectionSort();
+    throw new Error("sort type error");
+  });
+
   const items = model.currentStep.data;
 
   const gotoFirst = useCallback(() => {
@@ -50,7 +58,9 @@ const useBubbleSort = () => {
 };
 
 export function Home() {
-  const { model, items, gotoFirst, gotoLast, next, prev } = useBubbleSort();
+  const { model, items, gotoFirst, gotoLast, next, prev } = useSort(
+    "SELECTION"
+  );
   return (
     <div style={{ background: "pink" }}>
       <button onClick={gotoFirst} disabled={!model.canPrev}>{`<<`}</button>

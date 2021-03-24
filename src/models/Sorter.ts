@@ -16,7 +16,7 @@ type Step = {
   data: number[];
 };
 
-export class BubbleSort {
+export class Sorter {
   [immerable] = true;
   list: number[];
   steps: Record<number, Step>;
@@ -78,6 +78,7 @@ export class BubbleSort {
   }
 
   bubbleSort() {
+    if (this.isSorted) return this;
     let list = [...this.list];
     const __steps = {};
     let __no = 0;
@@ -89,6 +90,32 @@ export class BubbleSort {
           Object.assign(__steps, { [__no++]: { data: [...list] } });
         }
       }
+    }
+    return produce(this, (draft) => {
+      draft.isSorted = true;
+      draft.steps = __steps;
+      draft.stepsLength = __no;
+    });
+  }
+
+  selectionSort() {
+    if (this.isSorted) return this;
+    let list = [...this.list];
+    const __steps = {};
+    let __no = 0;
+    Object.assign(__steps, { [__no++]: { data: [...list] } });
+    for (let j = 0; j < list.length; j++) {
+      let min = Infinity;
+      let minIdx = -1;
+      for (let i = j; i < list.length; i++) {
+        if (min > list[i]) {
+          min = list[i];
+          minIdx = i;
+        }
+      }
+      if (minIdx === j) continue;
+      [list[minIdx], list[j]] = [list[j], list[minIdx]];
+      Object.assign(__steps, { [__no++]: { data: [...list] } });
     }
     return produce(this, (draft) => {
       draft.isSorted = true;
