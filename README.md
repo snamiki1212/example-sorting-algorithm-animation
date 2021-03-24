@@ -18,6 +18,20 @@ $ yarn
 $ yarn dev
 ```
 
+## Features
+
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+
+## TODO
+
+- [ ] Heap Sort
+- [ ] Merge Sort
+- [ ] Quick Sort
+- [ ] Shell Sort
+- [ ] Radix Sort
+
 ## LICENSE
 
 [MIT](https://github.com/snamiki1212/sorting-algorithm-animation/blob/main/LICENSE)
