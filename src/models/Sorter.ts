@@ -123,4 +123,24 @@ export class Sorter {
       draft.stepsLength = __no;
     });
   }
+
+  insertionSort() {
+    if (this.isSorted) return this;
+    const list = [...this.list];
+    const __steps = {};
+    let __no = 0;
+    Object.assign(__steps, { [__no++]: { data: [...list] } });
+    for (let i = 1; i < list.length; i++) {
+      for (let j = i; j > 0; j--) {
+        if (list[j - 1] < list[j]) break;
+        [list[j], list[j - 1]] = [list[j - 1], list[j]];
+        Object.assign(__steps, { [__no++]: { data: [...list] } });
+      }
+    }
+    return produce(this, (draft) => {
+      draft.isSorted = true;
+      draft.steps = __steps;
+      draft.stepsLength = __no;
+    });
+  }
 }
