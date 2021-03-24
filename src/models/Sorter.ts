@@ -41,29 +41,29 @@ export class Sorter {
   }
 
   next() {
-    if (!this.canNext) return this;
     return produce(this, (draft) => {
+      if (!this.canNext) return draft;
       draft.currentStepIdx++;
     });
   }
 
   prev() {
-    if (!this.canPrev) return this;
     return produce(this, (draft) => {
+      if (!this.canPrev) return draft;
       draft.currentStepIdx--;
     });
   }
 
   gotoFirst() {
-    if (!this.isSorted) return this;
     return produce(this, (draft) => {
+      if (!this.isSorted) return draft;
       draft.currentStepIdx = 0;
     });
   }
 
   gotoLast() {
-    if (!this.isSorted) return this;
     return produce(this, (draft) => {
+      if (!this.isSorted) return draft;
       draft.currentStepIdx = draft.stepsLength - 1;
     });
   }

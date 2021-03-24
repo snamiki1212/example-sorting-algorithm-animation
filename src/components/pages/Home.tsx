@@ -45,7 +45,8 @@ export function Home() {
   });
 
   const handleReset = useCallback(() => {
-    if (window.confirm("Do you want to reset this data?")) reset();
+    if (!window.confirm("Do you want to reset this data?")) return;
+    reset();
   }, [reset]);
 
   const handleSelectSortType = useCallback((e) => {
@@ -98,11 +99,9 @@ export function Home() {
 
       <Box style={{ background: "lightblue" }}>
         <table
-          id="column-example-1"
           className="charts-css column"
           style={{
             height: "200px",
-            maxWidth: "300px",
             margin: "0 auto",
           }}
         >
@@ -117,7 +116,7 @@ export function Home() {
                 transition={spring}
                 style={{ "--size": item * 0.1 + 0.1 } as any}
               >
-                <td>{item}</td>
+                <td>{item + 1}</td>
               </motion.tr>
             ))}
           </tbody>
