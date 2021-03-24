@@ -6,7 +6,8 @@ DEMO: [https://snamiki1212.github.io/sorting-algorithm-animation/](https://snami
 
 - Next.js / React (only SSG)
 - TypeScript
-- [CSS] TODO: Chakra UI
+- [UI] TODO: Chakra UI
+- [Chart] [charts.css](https://github.com/ChartsCSS/charts.css)
 - [Animation] [framer/motion](https://github.com/framer/motion)
 - [Model] [immer](https://github.com/immerjs/immer)
 - [CI/CD] Github Actions / Pages

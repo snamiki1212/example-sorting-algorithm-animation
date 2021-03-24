@@ -53,18 +53,33 @@ export function Home() {
         </button>
         <button onClick={gotoLast} disabled={!model?.canNext}>{`>>`}</button>
       </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        {items.map((item) => (
-          <motion.div
-            key={item}
-            animate="visible"
-            variants={variants}
-            layout
-            transition={spring}
-          >
-            {item}
-          </motion.div>
-        ))}
+
+      <div style={{ background: "lightblue" }}>
+        <table
+          id="column-example-1"
+          className="charts-css column"
+          style={{
+            height: "200px",
+            maxWidth: "300px",
+            margin: "0 auto",
+          }}
+        >
+          <caption> Column Example #1 </caption>
+          <tbody>
+            {items.map((item) => (
+              <motion.tr
+                key={item}
+                animate="visible"
+                variants={variants}
+                layout
+                transition={spring}
+                style={{ "--size": item * 0.1 + 0.1 } as any}
+              >
+                <td>{item}</td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
