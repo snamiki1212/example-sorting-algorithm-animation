@@ -2,7 +2,17 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../../hooks/useSort";
 import { SORT_TYPE } from "../../models/Sorter";
-import { Button, Select, Box, Center } from "@chakra-ui/react";
+import {
+  Button,
+  Select,
+  Box,
+  Center,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
 
 const spring = {
   type: "spring",
@@ -27,10 +37,12 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
 ];
 
 export function Home() {
+  const [length, setLength] = useState<number>(10);
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
-  const { model, items, gotoFirst, gotoLast, next, prev, reset } = useSort(
-    sortType
-  );
+  const { model, items, gotoFirst, gotoLast, next, prev, reset } = useSort({
+    type: sortType,
+    length,
+  });
 
   const handleReset = useCallback(() => {
     if (window.confirm("Do you want to reset this data?")) reset();
@@ -38,6 +50,10 @@ export function Home() {
 
   const handleSelectSortType = useCallback((e) => {
     setSortType(e.target.value);
+  }, []);
+
+  const handleChangeLength = useCallback((value) => {
+    setLength(value);
   }, []);
 
   return (
@@ -69,6 +85,15 @@ export function Home() {
         <Center>
           <Button onClick={handleReset}>Reset</Button>
         </Center>
+        <Box>
+          <NumberInput onChange={handleChangeLength} value={length}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
       </Box>
 
       <Box style={{ background: "lightblue" }}>

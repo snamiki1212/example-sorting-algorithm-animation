@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Sorter, SORT_TYPE } from "../models/Sorter";
 
-export const useSort = (type: SORT_TYPE = "BUBBLE") => {
+export const useSort = ({
+  type = "BUBBLE",
+  length = 10,
+}: {
+  type: SORT_TYPE;
+  length?: number;
+}) => {
   const [model, setModel] = useState<Sorter>(undefined);
-
-  useEffect(() => {
-    const sorter = Sorter.new().sort(type);
-    setModel(sorter);
-  }, [type]);
 
   const items = model?.currentStep?.data ?? [];
 
@@ -28,9 +29,13 @@ export const useSort = (type: SORT_TYPE = "BUBBLE") => {
   }, []);
 
   const reset = useCallback(() => {
-    const sorter = Sorter.new().sort(type);
+    const sorter = Sorter.new(length).sort(type);
     setModel(sorter);
-  }, [type]);
+  }, [length, type]);
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   return {
     model,
