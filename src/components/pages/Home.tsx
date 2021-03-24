@@ -2,14 +2,13 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../../hooks/useSort";
 import { SORT_TYPE } from "../../models/Sorter";
-//
 import { Button, Select, Box, Center } from "@chakra-ui/react";
 
 const spring = {
   type: "spring",
   damping: 20,
   stiffness: 300,
-};
+} as const;
 
 const variants = {
   visible: (idx) => ({
@@ -19,7 +18,7 @@ const variants = {
     },
   }),
   hidden: { opacity: 0 },
-};
+} as const;
 
 const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "BUBBLE", text: "Bubble Sort" },
