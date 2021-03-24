@@ -1,16 +1,5 @@
 import { immerable, produce } from "immer";
-
-// TODO: move to utils file
-function shuffle<T>(_list: T[]) {
-  let list = [..._list];
-  let currentIdx = list.length;
-  while (currentIdx > 0) {
-    const randomIdx = Math.floor(Math.random() * currentIdx);
-    currentIdx -= 1;
-    [list[randomIdx], list[currentIdx]] = [list[currentIdx], list[randomIdx]];
-  }
-  return list;
-}
+import { shuffle } from "../utils/array";
 
 type Step = {
   data: number[];
@@ -34,15 +23,19 @@ export class Sorter {
   }
 
   get canPrev() {
-    if (!this.isSorted) return false; // sort before to call next
-    if (this.currentStepIdx <= 0) return false; // Cannot prev because current idx indicates first one
+    if (!this.isSorted) return false;
+    if (this.currentStepIdx <= 0) return false;
     return true;
   }
 
   get canNext() {
-    if (!this.isSorted) return false; //Sort before to call next
-    if (this.stepsLength - 1 <= this.currentStepIdx) return false; // Cannot next because current idx indicates last one
+    if (!this.isSorted) return false;
+    if (this.stepsLength - 1 <= this.currentStepIdx) return false;
     return true;
+  }
+
+  get currentStep() {
+    return this.steps[this.currentStepIdx];
   }
 
   next() {
@@ -71,10 +64,6 @@ export class Sorter {
     return produce(this, (draft) => {
       draft.currentStepIdx = draft.stepsLength - 1;
     });
-  }
-
-  get currentStep() {
-    return this.steps[this.currentStepIdx];
   }
 
   bubbleSort() {
