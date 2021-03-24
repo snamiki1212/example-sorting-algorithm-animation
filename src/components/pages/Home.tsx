@@ -1,7 +1,9 @@
-import { useState, useCallback, useEffect, useRef, forwardRef } from "react";
+import { useState, useCallback, forwardRef } from "react";
 import { motion } from "framer-motion";
 import { useSort } from "../../hooks/useSort";
 import { useToggle } from "../../hooks/useToggle";
+import { useKeydown } from "../../hooks/useKeydown";
+import { useHandleFocus } from "../../hooks/useHandleFocus";
 import { SORT_TYPE } from "../../models/Sorter";
 import {
   Button,
@@ -50,48 +52,6 @@ const NumberInputer = forwardRef((props: any, ref) => {
     </NumberInput>
   );
 });
-
-const KEY_CODE_LIST = {
-  LEFT: 37,
-  RIGHT: 39,
-} as const;
-
-const useKeydown = ({
-  disabled,
-  callbacks,
-}: {
-  disabled: boolean;
-  callbacks: { right: () => void; left: () => void };
-}) => {
-  const handleKeydown = useCallback(
-    (event) => {
-      if (disabled) return;
-      if (event.keyCode === KEY_CODE_LIST.RIGHT) return callbacks.right();
-      if (event.keyCode === KEY_CODE_LIST.LEFT) return callbacks.left();
-    },
-    [disabled, callbacks]
-  );
-
-  useEffect(() => {
-    const event = "keydown";
-    window.addEventListener(event, handleKeydown);
-    return () => window.removeEventListener(event, handleKeydown);
-  }, [handleKeydown]);
-
-  return handleKeydown;
-};
-
-const useHandleFocus = () => {
-  const ref = useRef(null);
-  const { value: hasFocus, on, off } = useToggle(false);
-  useEffect(() => {
-    if (document.hasFocus() && ref?.current?.contains(document.activeElement)) {
-      on();
-    }
-  }, [on]);
-
-  return [hasFocus, { ref, onFocus: on, onBlur: off }] as const;
-};
 
 export function Home() {
   const [length, setLength] = useState<number>(10);
