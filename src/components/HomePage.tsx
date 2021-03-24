@@ -1,33 +1,25 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { useSort } from "../../hooks/useSort";
-import { SORT_TYPE } from "../../models/Sorter";
+import { useSort } from "../hooks/useSort";
+import { useToggle } from "../hooks/useToggle";
+import { useListenKeydown } from "../hooks/useListenKeydown";
+import { useHandleFocus } from "../hooks/useHandleFocus";
+import { SORT_TYPE } from "../models/Sorter";
 import {
   Button,
   Select,
   Box,
+  Flex,
   Center,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Text,
+  Switch,
 } from "@chakra-ui/react";
+import { NumberInputer } from "./NumberInputer";
 
 const spring = {
   type: "spring",
   damping: 20,
   stiffness: 300,
-} as const;
-
-const variants = {
-  visible: (idx) => ({
-    opacity: 1,
-    transition: {
-      transform: `translate3d(${idx * 5}px, 0, 0)`,
-    },
-  }),
-  hidden: { opacity: 0 },
 } as const;
 
 const OPTIONS: { value: SORT_TYPE; text: string }[] = [
@@ -36,13 +28,18 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "INSERTION", text: "Insertion Sort" },
 ];
 
-export function Home() {
+const inRange = (num: Number) => num >= 0 && num <= 100;
+
+export function HomePage() {
   const [length, setLength] = useState<number>(10);
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
   const { model, items, gotoFirst, gotoLast, next, prev, reset } = useSort({
     type: sortType,
     length,
   });
+  const columnBasis = items.length === 0 ? 0 : 1 / items.length;
+
+  const { value: showNumber, toggle: toggleShowNumber } = useToggle(false);
 
   const handleReset = useCallback(() => {
     if (!window.confirm("Do you want to reset this data?")) return;
@@ -54,13 +51,21 @@ export function Home() {
   }, []);
 
   const handleChangeLength = useCallback((value) => {
+    if (!inRange(value)) return;
     setLength(value);
   }, []);
 
+  const [hasFocus, { ref, onFocus, onBlur }] = useHandleFocus();
+
+  useListenKeydown({
+    disabled: hasFocus,
+    callbacks: { right: next, left: prev },
+  });
+
   return (
-    <Box style={{ background: "pink" }}>
-      <Box>
-        <Box>
+    <Box p={5}>
+      <Box border="solid" borderWidth={1} borderColor="gray.300" p={5} my={2}>
+        <Center my={2}>
           <Select onChange={handleSelectSortType}>
             {OPTIONS.map(({ value, text }) => (
               <option key={value} value={value}>
@@ -68,8 +73,8 @@ export function Home() {
               </option>
             ))}
           </Select>
-        </Box>
-        <Center>
+        </Center>
+        <Center my={2}>
           <Button onClick={gotoFirst} disabled={!model?.canPrev}>
             {`<<`}
           </Button>
@@ -83,40 +88,45 @@ export function Home() {
             {`>>`}
           </Button>
         </Center>
-        <Center>
-          <Button onClick={handleReset}>Reset</Button>
-        </Center>
-        <Box>
-          <NumberInput onChange={handleChangeLength} value={length}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap="2rem">
+          <Flex alignItems="center">
+            <Text>Show Number</Text>
+            <Switch isChecked={showNumber} onChange={toggleShowNumber} ml={3} />
+          </Flex>
+          <Flex alignItems="center">
+            <Text>Item Number</Text>
+            <NumberInputer
+              onChange={handleChangeLength}
+              value={length}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              ref={ref}
+            />
+          </Flex>
+          <Button onClick={handleReset}>Regenerate</Button>
         </Box>
       </Box>
 
-      <Box style={{ background: "lightblue" }}>
+      <Box>
         <table
           className="charts-css column"
           style={{
-            height: "200px",
-            margin: "0 auto",
+            height: "500px",
           }}
         >
-          <caption> Column Example #1 </caption>
           <tbody>
             {items.map((item) => (
               <motion.tr
                 key={item}
-                animate="visible"
-                variants={variants}
                 layout
                 transition={spring}
-                style={{ "--size": item * 0.1 + 0.1 } as any}
+                style={
+                  {
+                    "--size": (item + 1) * columnBasis,
+                  } as any
+                }
               >
-                <td>{item + 1}</td>
+                <td>{showNumber && item + 1}</td>
               </motion.tr>
             ))}
           </tbody>

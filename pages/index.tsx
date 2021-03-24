@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Home } from "../src/components/pages/Home";
+import { HomePage } from "../src/components/HomePage";
 
 export default function Index() {
   return (
@@ -8,7 +8,7 @@ export default function Index() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Home />
+      <HomePage />
     </div>
   );
 }
