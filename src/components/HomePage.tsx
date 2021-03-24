@@ -63,9 +63,9 @@ export function HomePage() {
   });
 
   return (
-    <Box>
-      <Box border="solid" borderWidth={1} borderColor="gray.300" p={5} m={5}>
-        <Center>
+    <Box p={5}>
+      <Box border="solid" borderWidth={1} borderColor="gray.300" p={5} my={2}>
+        <Center my={2}>
           <Select onChange={handleSelectSortType}>
             {OPTIONS.map(({ value, text }) => (
               <option key={value} value={value}>
@@ -74,7 +74,7 @@ export function HomePage() {
             ))}
           </Select>
         </Center>
-        <Center>
+        <Center my={2}>
           <Button onClick={gotoFirst} disabled={!model?.canPrev}>
             {`<<`}
           </Button>
@@ -91,7 +91,7 @@ export function HomePage() {
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap="2rem">
           <Flex alignItems="center">
             <Text>Show Number</Text>
-            <Switch isChecked={showNumber} onChange={toggleShowNumber} />
+            <Switch isChecked={showNumber} onChange={toggleShowNumber} ml={3} />
           </Flex>
           <Flex alignItems="center">
             <Text>Item Number</Text>
