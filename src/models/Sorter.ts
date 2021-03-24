@@ -5,6 +5,8 @@ type Step = {
   data: number[];
 };
 
+export type SORT_TYPE = "BUBBLE" | "SELECTION" | "INSERTION";
+
 export class Sorter {
   [immerable] = true;
   list: number[];
@@ -63,6 +65,15 @@ export class Sorter {
     if (!this.isSorted) return this;
     return produce(this, (draft) => {
       draft.currentStepIdx = draft.stepsLength - 1;
+    });
+  }
+
+  sort(type: SORT_TYPE) {
+    return produce(this, (draft) => {
+      if (type === "BUBBLE") return draft.bubbleSort();
+      if (type === "SELECTION") return draft.selectionSort();
+      if (type === "INSERTION") return draft.insertionSort();
+      throw new Error("sort type error");
     });
   }
 

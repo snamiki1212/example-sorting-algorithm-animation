@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { useSort, SORT_TYPE } from "../../hooks/useSort";
+import { useSort } from "../../hooks/useSort";
+import { SORT_TYPE } from "../../models/Sorter";
 //
-import { Button, Select, Box } from "@chakra-ui/react";
+import { Button, Select, Box, Center } from "@chakra-ui/react";
 
 const spring = {
   type: "spring",
@@ -28,7 +29,13 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
 
 export function Home() {
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
-  const { model, items, gotoFirst, gotoLast, next, prev } = useSort(sortType);
+  const { model, items, gotoFirst, gotoLast, next, prev, reset } = useSort(
+    sortType
+  );
+
+  const handleReset = useCallback(() => {
+    if (window.confirm("Do you want to reset this data?")) reset();
+  }, [reset]);
 
   const handleSelectSortType = useCallback((e) => {
     setSortType(e.target.value);
@@ -37,27 +44,32 @@ export function Home() {
   return (
     <Box style={{ background: "pink" }}>
       <Box>
-        <Select onChange={handleSelectSortType}>
-          {OPTIONS.map(({ value, text }) => (
-            <option key={value} value={value}>
-              {text}
-            </option>
-          ))}
-        </Select>
-      </Box>
-      <Box>
-        <Button onClick={gotoFirst} disabled={!model?.canPrev}>
-          {`<<`}
-        </Button>
-        <Button onClick={prev} disabled={!model?.canPrev}>
-          {`<`}
-        </Button>
-        <Button onClick={next} disabled={!model?.canNext}>
-          {`>`}
-        </Button>
-        <Button onClick={gotoLast} disabled={!model?.canNext}>
-          {`>>`}
-        </Button>
+        <Box>
+          <Select onChange={handleSelectSortType}>
+            {OPTIONS.map(({ value, text }) => (
+              <option key={value} value={value}>
+                {text}
+              </option>
+            ))}
+          </Select>
+        </Box>
+        <Center>
+          <Button onClick={gotoFirst} disabled={!model?.canPrev}>
+            {`<<`}
+          </Button>
+          <Button onClick={prev} disabled={!model?.canPrev}>
+            {`<`}
+          </Button>
+          <Button onClick={next} disabled={!model?.canNext}>
+            {`>`}
+          </Button>
+          <Button onClick={gotoLast} disabled={!model?.canNext}>
+            {`>>`}
+          </Button>
+        </Center>
+        <Center>
+          <Button onClick={handleReset}>Reset</Button>
+        </Center>
       </Box>
 
       <Box style={{ background: "lightblue" }}>

@@ -1,17 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
-import { Sorter } from "../models/Sorter";
-
-export type SORT_TYPE = "BUBBLE" | "SELECTION" | "INSERTION";
+import { Sorter, SORT_TYPE } from "../models/Sorter";
 
 export const useSort = (type: SORT_TYPE = "BUBBLE") => {
   const [model, setModel] = useState<Sorter>(undefined);
 
   useEffect(() => {
-    const sorter = Sorter.new();
-    if (type === "BUBBLE") return setModel(sorter.bubbleSort());
-    if (type === "SELECTION") return setModel(sorter.selectionSort());
-    if (type === "INSERTION") return setModel(sorter.insertionSort());
-    throw new Error("sort type error");
+    const sorter = Sorter.new().sort(type);
+    setModel(sorter);
   }, [type]);
 
   const items = model?.currentStep?.data ?? [];
@@ -32,6 +27,11 @@ export const useSort = (type: SORT_TYPE = "BUBBLE") => {
     setModel((prev) => prev.next());
   }, []);
 
+  const reset = useCallback(() => {
+    const sorter = Sorter.new().sort(type);
+    setModel(sorter);
+  }, [type]);
+
   return {
     model,
     items,
@@ -39,5 +39,6 @@ export const useSort = (type: SORT_TYPE = "BUBBLE") => {
     gotoLast,
     prev,
     next,
+    reset,
   };
 };
