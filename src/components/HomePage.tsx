@@ -28,6 +28,8 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "INSERTION", text: "Insertion Sort" },
 ];
 
+const inRange = (num: Number) => num >= 0 && num <= 100;
+
 export function HomePage() {
   const [length, setLength] = useState<number>(10);
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
@@ -49,6 +51,7 @@ export function HomePage() {
   }, []);
 
   const handleChangeLength = useCallback((value) => {
+    if (!inRange(value)) return;
     setLength(value);
   }, []);
 
