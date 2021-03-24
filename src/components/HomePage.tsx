@@ -1,23 +1,12 @@
 import { useState, useCallback, forwardRef } from "react";
 import { motion } from "framer-motion";
-import { useSort } from "../../hooks/useSort";
-import { useToggle } from "../../hooks/useToggle";
-import { useKeydown } from "../../hooks/useKeydown";
-import { useHandleFocus } from "../../hooks/useHandleFocus";
-import { SORT_TYPE } from "../../models/Sorter";
-import {
-  Button,
-  Select,
-  Box,
-  Center,
-  Text,
-  Switch,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from "@chakra-ui/react";
+import { useSort } from "../hooks/useSort";
+import { useToggle } from "../hooks/useToggle";
+import { useKeydown } from "../hooks/useKeydown";
+import { useHandleFocus } from "../hooks/useHandleFocus";
+import { SORT_TYPE } from "../models/Sorter";
+import { Button, Select, Box, Center, Text, Switch } from "@chakra-ui/react";
+import { NumberInputer } from "./NumberInputer";
 
 const spring = {
   type: "spring",
@@ -41,19 +30,7 @@ const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "INSERTION", text: "Insertion Sort" },
 ];
 
-const NumberInputer = forwardRef((props: any, ref) => {
-  return (
-    <NumberInput {...props} ref={ref}>
-      <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
-    </NumberInput>
-  );
-});
-
-export function Home() {
+export function HomePage() {
   const [length, setLength] = useState<number>(10);
   const [sortType, setSortType] = useState<SORT_TYPE>("INSERTION");
   const { model, items, gotoFirst, gotoLast, next, prev, reset } = useSort({
