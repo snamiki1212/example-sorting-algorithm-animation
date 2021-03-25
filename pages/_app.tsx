@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import "charts.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Layout } from "../src/components/Layout";
 

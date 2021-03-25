@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
 import { useSort } from "../hooks/useSort";
 import { useToggle } from "../hooks/useToggle";
 import { useListenKeydown } from "../hooks/useListenKeydown";
@@ -15,12 +14,7 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { NumberInputer } from "./NumberInputer";
-
-const spring = {
-  type: "spring",
-  damping: 20,
-  stiffness: 300,
-} as const;
+import { Canvas } from "./Canvas";
 
 const OPTIONS: { value: SORT_TYPE; text: string }[] = [
   { value: "BUBBLE", text: "Bubble Sort" },
@@ -37,7 +31,6 @@ export function HomePage() {
     type: sortType,
     length,
   });
-  const columnBasis = items.length === 0 ? 0 : 1 / items.length;
 
   const { value: showNumber, toggle: toggleShowNumber } = useToggle(false);
 
@@ -106,31 +99,8 @@ export function HomePage() {
           <Button onClick={handleReset}>Regenerate</Button>
         </Box>
       </Box>
-
       <Box>
-        <table
-          className="charts-css column"
-          style={{
-            height: "500px",
-          }}
-        >
-          <tbody>
-            {items.map((item) => (
-              <motion.tr
-                key={item}
-                layout
-                transition={spring}
-                style={
-                  {
-                    "--size": (item + 1) * columnBasis,
-                  } as any
-                }
-              >
-                <td>{showNumber && item + 1}</td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+        <Canvas data={items} options={{ showNumber }} />
       </Box>
     </Box>
   );
