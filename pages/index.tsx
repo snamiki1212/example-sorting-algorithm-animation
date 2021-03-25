@@ -5,8 +5,8 @@ export default function Index() {
   return (
     <div>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Sorting Algorithm Animation</title>
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <HomePage />
     </div>
