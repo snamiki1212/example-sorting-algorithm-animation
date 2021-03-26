@@ -20,7 +20,7 @@ export function Canvas({ data: items, options: { showNumber } }: Props) {
     <table
       className="charts-css column"
       style={{
-        height: "500px",
+        height: "400px",
       }}
     >
       <tbody>
